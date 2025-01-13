@@ -4,28 +4,55 @@ import { FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider';
 import Swal from 'sweetalert2';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const SignUp = () => {
     const { createUser, updateProfileInfo } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, } = useForm();
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const axiosPublic = useAxiosPublic();
 
     const onSubmit = (data) => {
         console.log(data);
         createUser(data.email, data.password)
             .then(result => {
                 // console.log(result);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Registration Successful',
-                    text: `Welcome, ${result.user?.displayName || 'User'}! Your account has been created.`,
-                    customClass: {
-                        confirmButton: 'bg-teal-400 text-white'
-                    }
-                });
-                updateProfileInfo(data.name, data.photo);
-                navigate('/');
+                updateProfileInfo(data.name, data.photo)
+                    .then(() => {
+                        // create user entry in the database
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email,
+                            photo: data.photo
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    // reset();
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Registration Successful',
+                                        text: `Welcome, ${result.user?.displayName || 'User'}! Your account has been created.`,
+                                        customClass: {
+                                            confirmButton: 'bg-teal-400 text-white'
+                                        }
+                                    });
+
+                                    navigate('/');
+                                }
+                            })
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Updated Failed',
+                            text: error.code,
+                            customClass: {
+                                confirmButton: 'bg-red-400 text-white'
+                            }
+                        });
+                    })
             })
             .catch(error => {
                 // console.error(error);
@@ -61,7 +88,7 @@ const SignUp = () => {
                     {/* Photo URL Field */}
                     <div className="form-control">
                         <label className="label text-lg font-medium text-gray-700">Photo URL</label>
-                        <input type="text" {...register("photo", {required: true})} name="photo" placeholder="Enter your photo URL" className="input input-bordered w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-teal-300 transition" required />
+                        <input type="text" {...register("photo", { required: true })} name="photo" placeholder="Enter your photo URL" className="input input-bordered w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-teal-300 transition" required />
                         {errors.photo && <p className='text-red-600'>Photo URL is required.</p>}
                     </div>
 
