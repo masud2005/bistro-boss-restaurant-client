@@ -21,8 +21,6 @@ const Cart = () => {
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
-
-
             if (result.isConfirmed) {
                 axiosSecure.delete(`/carts/${id}`)
                     .then(res => {

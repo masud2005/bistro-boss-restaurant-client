@@ -3,11 +3,12 @@ import SectionTitle from '../../../components/SectionTitle/SectionTitle';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { FaTrashAlt, FaUsers } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
 
-    const { data: users = [] } = useQuery({
+    const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
             const res = await axiosSecure.get('/users');
@@ -16,8 +17,48 @@ const AllUsers = () => {
     })
     // console.log(users);
 
-    const handleDeleteUser = () => {
+    const handleMakeAdmin = (user) => {
+        // console.log(user);
+        axiosSecure.patch(`/users/admin/${user._id}`)
+            .then(res => {
+                // console.log(res.data)
+                if (res.data.modifiedCount > 0) {
+                    refetch();
+                    Swal.fire({
+                        icon: "success",
+                        title: 'Successfully Updated',
+                        text: `${user.name} is an Admin Now!`,
+                        timer: 1500
+                    });
+                }
+            })
+    }
 
+    const handleDeleteUser = (user) => {
+        // console.log(user);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.delete(`/users/${user._id}`)
+                    .then(res => {
+                        if (res.data.deletedCount > 0) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: `User has been deleted.`,
+                                icon: "success"
+                            });
+                            refetch();
+                        }
+                    })
+            }
+        });
     }
 
     return (
@@ -44,12 +85,14 @@ const AllUsers = () => {
                                     <td>{user.name}</td>
                                     <td>{user.email}</td>
                                     <td>
-                                        {user.role === 'admin' ? 'Admin' : <button
-                                            onClick={() => handleMakeAdmin(user)}
-                                            className="btn btn-lg bg-orange-500">
-                                            <FaUsers className="text-white 
+                                        {user.role === 'admin' ?
+                                            <h3 className='text-lg font-semibold'>Admin</h3> :
+                                            <button
+                                                onClick={() => handleMakeAdmin(user)}
+                                                className="btn btn-lg bg-orange-500">
+                                                <FaUsers className="text-white 
                                         text-2xl"></FaUsers>
-                                        </button>}
+                                            </button>}
                                     </td>
                                     <td>
                                         <button
