@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider';
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 const SignUp = () => {
     const { createUser, updateProfileInfo } = useContext(AuthContext);
@@ -132,7 +133,8 @@ const SignUp = () => {
                 </form>
 
                 {/* Login with Google */}
-                <button onClick={handleLoginWithGoogle} className="btn w-full mt-6 py-2 bg-teal-400 text-base rounded-md hover:bg-teal-500 transition flex items-center justify-center"><FaGoogle /> Login with Google</button>
+                {/* <button onClick={handleLoginWithGoogle} className="btn w-full mt-6 py-2 bg-teal-400 text-base rounded-md hover:bg-teal-500 transition flex items-center justify-center"><FaGoogle /> Login with Google</button> */}
+                <SocialLogin />
 
                 {/* Redirect to Login */}
                 <p className="text-center text-base font-medium text-gray-600 mt-3">Already registered? Go to{' '}<Link to="/sign-in" className="text-teal-600 hover:underline">Sign In</Link></p>

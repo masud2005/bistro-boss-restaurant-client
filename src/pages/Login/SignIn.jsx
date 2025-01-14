@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../providers/AuthProvider';
 import Swal from 'sweetalert2';
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 const SignIn = () => {
     const { signInUser } = useContext(AuthContext);
@@ -38,7 +39,7 @@ const SignIn = () => {
                 // console.log(result);
                 Swal.fire({
                     icon: 'success',
-                    title: 'Login Successful',
+                    title: 'Sign In Successful',
                     text: `Welcome, ${result.user?.displayName || 'User'}! You are now Sign in.`,
                     timer: 3000,
                     customClass: {
@@ -88,7 +89,8 @@ const SignIn = () => {
                     <button disabled={disabled} className="btn w-full py-2 bg-indigo-500 text-white text-base rounded-lg hover:bg-indigo-600 transition"> Login </button>
                 </form>
                 <div className="mt-6">
-                    <button onClick={handleLoginWithGoogle} className="w-full flex items-center justify-center font-medium py-2 bg-teal-400 text-base rounded-lg hover:bg-teal-500 transition"><FaGoogle /> <span className='ml-2'>Login with Google</span></button>
+                    {/* <button onClick={handleLoginWithGoogle} className="w-full flex items-center justify-center font-medium py-2 bg-teal-400 text-base rounded-lg hover:bg-teal-500 transition"><FaGoogle /> <span className='ml-2'>Login with Google</span></button> */}
+                    <SocialLogin />
                 </div>
                 <p className="mt-4 text-center text-base text-gray-600">Don’t have an account?<Link to="/sign-up" className="text-teal-600 font-medium hover:underline"> Sign Up Now</Link></p>
             </div>
