@@ -6,12 +6,15 @@ import { AuthContext } from '../../../providers/AuthProvider';
 import Swal from 'sweetalert2';
 import useCart from '../../../hooks/useCart';
 import { FaCartPlus } from 'react-icons/fa';
+import useAdmin from '../../../hooks/useAdmin';
 
 const Navbar = () => {
     const { user, signOutUser } = useContext(AuthContext);
     const [menuOpen, setMenuOpen] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [cart] = useCart();
+    // const [] = 
+    const [isAdmin] = useAdmin();
 
     // Theme Loaded localStorage 
     useEffect(() => {
@@ -73,7 +76,13 @@ const Navbar = () => {
                         <NavLink to="/" className={({ isActive }) => isActive ? 'text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'text-base hover:text-yellow-400'}>Home</NavLink>
                         <NavLink to="/our-menu" className={({ isActive }) => isActive ? 'text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'text-base hover:text-yellow-400'}>Our Menu</NavLink>
                         <NavLink to="/our-shop/salad" className={({ isActive }) => isActive ? 'text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'text-base hover:text-yellow-400'}>Our Shop</NavLink>
-                        <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'text-base hover:text-yellow-400'}>Dashboard</NavLink>
+                        {
+                            user && isAdmin && <NavLink to="/dashboard/adminHome" className={({ isActive }) => isActive ? 'text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'text-base hover:text-yellow-400'}>Dashboard</NavLink>
+                        }
+                        {
+                            user && !isAdmin && <NavLink to="/dashboard/userHome" className={({ isActive }) => isActive ? 'text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'text-base hover:text-yellow-400'}>Dashboard</NavLink>
+                        }
+                        {/* <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'text-base hover:text-yellow-400'}>Dashboard</NavLink> */}
                         {/* {
                             user && <>
                                 <NavLink to="/add-equipment" className={({ isActive }) => isActive ? 'text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'text-base hover:text-yellow-400'}>Add Equipment</NavLink>
@@ -145,7 +154,12 @@ const Navbar = () => {
                     <NavLink to="/" className={({ isActive }) => isActive ? 'block text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'block text-base hover:text-teal-600 pt-2'} onClick={() => setMenuOpen(false)}>Home</NavLink>
                     <NavLink to="/our-menu" className={({ isActive }) => isActive ? 'block text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'block text-base hover:text-teal-600 pt-2'} onClick={() => setMenuOpen(false)}>Our Menu</NavLink>
                     <NavLink to="/our-shop/salad" className={({ isActive }) => isActive ? 'block text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'block text-base hover:text-teal-600 pt-2'} onClick={() => setMenuOpen(false)}>Our Shop</NavLink>
-                    <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'block text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'block text-base hover:text-teal-600 pt-2'} onClick={() => setMenuOpen(false)}>Dashboard</NavLink>
+                    {
+                        user && isAdmin && <NavLink to="/dashboard/adminHome" className={({ isActive }) => isActive ? 'text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'text-base hover:text-yellow-400'}>Dashboard</NavLink>
+                    }
+                    {
+                        user && !isAdmin && <NavLink to="/dashboard/userHome" className={({ isActive }) => isActive ? 'text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'text-base hover:text-yellow-400'}>Dashboard</NavLink>
+                    }
                     {
                         user && <>
                             <NavLink to="/add-equipment" className={({ isActive }) => isActive ? 'block text-lg font-semibold border-b-2 border-yellow-400 text-yellow-300' : 'block text-base hover:text-teal-600 pt-2'} onClick={() => setMenuOpen(false)}>Add Equipment</NavLink>
