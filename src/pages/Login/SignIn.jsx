@@ -30,7 +30,7 @@ const SignIn = () => {
 
     const handleSignIn = (e) => {
         e.preventDefault();
-        console.log('signIn');
+        // console.log('signIn');
         const email = e.target.email.value;
         const password = e.target.password.value;
         // console.log(email, password);

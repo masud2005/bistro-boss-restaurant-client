@@ -32,7 +32,7 @@ const SocialLogin = () => {
                         navigate(location?.state ? location?.state : '/');
                     })
                     .catch(err => {
-                        console.log(err);
+                        // console.log(err);
                     })
             })
             .catch(error => {

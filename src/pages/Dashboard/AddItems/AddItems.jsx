@@ -14,7 +14,7 @@ const AddItems = () => {
 
     const { register, handleSubmit, formState: { errors }, reset} = useForm()
     const onSubmit = async (data) => {
-        console.log(data)
+        // console.log(data)
 
         // image upload to imgbb and then get an url
         const imageFile = { image: data.image[0] };
@@ -23,7 +23,7 @@ const AddItems = () => {
                 'content-type': 'multipart/form-data'
             }
         })
-        console.log(res.data);
+        // console.log(res.data);
 
         if (res.data.success) {
             // now send the menu item data to the server with the image url

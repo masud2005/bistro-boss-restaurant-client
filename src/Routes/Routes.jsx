@@ -84,7 +84,7 @@ const router = createBrowserRouter([
             {
                 path: '/dashboard/updateItem/:id',
                 element: <AdminRoute><UpdateItem /></AdminRoute>,
-                loader: ({params}) => fetch(`http://localhost:5000/our-menu/${params.id}`)
+                loader: ({params}) => fetch(`https://bistro-boss-restaurant-server-puce.vercel.app/our-menu/${params.id}`)
             },
             {
                 path: '/dashboard/users',
